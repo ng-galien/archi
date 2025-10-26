@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-  <!-- Use a relative redirect so it works under project pages (e.g., /archi/) -->
-  <meta http-equiv="refresh" content="0; url=./en/" />
+  <!-- Polyglot: default language (en) lives at root. Only redirect French users to ./fr/. -->
+  <meta http-equiv="refresh" content="0; url=./" />
     <title>Redirecting…</title>
     <script>
       (function () {
@@ -14,9 +14,16 @@
           // Ensure trailing slash for base
           if (!path.endsWith('/')) path += '/';
           var base = path;
-          var lang = userLang.startsWith('fr') ? 'fr' : 'en';
-          var target = base + lang + '/';
-          window.location.replace(target);
+          var isFrench = userLang.startsWith('fr');
+          if (isFrench) {
+            var target = base + 'fr/';
+            window.location.replace(target);
+          } else {
+            // Stay on default language at root
+            if (window.location.pathname !== base) {
+              window.location.replace(base);
+            }
+          }
         } catch (e) {
           // fallback to meta refresh (relative)
         }
@@ -24,6 +31,6 @@
     </script>
   </head>
   <body>
-    <p>Redirecting to your language… If nothing happens, visit <a href="/en/">English</a> or <a href="/fr/">Français</a>.</p>
+    <p>Redirecting to your language… If nothing happens, visit <a href="./">English</a> or <a href="./fr/">Français</a>.</p>
   </body>
 </html>

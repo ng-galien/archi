@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_URL=${BASE_URL:-"http://127.0.0.1:4000"}
+# For local dev with baseurl, default to project path. Override BASE_URL to change.
+BASE_URL=${BASE_URL:-"http://127.0.0.1:4000/archi"}
 # Basic endpoints
 URLS=(
   "/"
-  "/en/"
   "/fr/"
-  "/en/gdd/"
+  "/gdd/"
   "/fr/gdd/"
-  "/en/gdd/ddd-gdd.html"
 )
 
 fail=0
@@ -25,20 +24,32 @@ for path in "${URLS[@]}"; do
   fi
 done
 
-# French ddd-gdd may be served as .html or .md depending on front matter
-FR_PATH_HTML="/fr/gdd/ddd-gdd.html"
-FR_PATH_MD="/fr/gdd/ddd-gdd.md"
-code_html=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL%/}${FR_PATH_HTML}" || echo "000")
-if [[ "$code_html" == "200" ]]; then
-  echo "[OK]   ${BASE_URL%/}${FR_PATH_HTML}"
-else
-  code_md=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL%/}${FR_PATH_MD}" || echo "000")
-  if [[ "$code_md" == "200" ]]; then
-    echo "[OK]   ${BASE_URL%/}${FR_PATH_MD}"
-  else
-    echo "[FAIL] ${BASE_URL%/}${FR_PATH_HTML} (and .md) -> HTML:$code_html MD:$code_md"
-    fail=1
+# DDD-GDD page may be written as canonical or language-suffixed depending on build state
+EN_PATHS=("/gdd/ddd-gdd.html" "/gdd/ddd-gdd.en.html")
+FR_PATHS=("/fr/gdd/ddd-gdd.html" "/fr/gdd/ddd-gdd.fr.html")
+
+for path in "${EN_PATHS[@]}"; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL%/}${path}" || echo "000")
+  if [[ "$code" == "200" ]]; then
+    echo "[OK]   ${BASE_URL%/}${path}"
+    break
   fi
+done
+if [[ "$code" != "200" ]]; then
+  echo "[FAIL] English DDD-GDD not found at ${EN_PATHS[*]}"
+  fail=1
+fi
+
+for path in "${FR_PATHS[@]}"; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL%/}${path}" || echo "000")
+  if [[ "$code" == "200" ]]; then
+    echo "[OK]   ${BASE_URL%/}${path}"
+    break
+  fi
+done
+if [[ "$code" != "200" ]]; then
+  echo "[FAIL] French DDD-GDD not found at ${FR_PATHS[*]}"
+  fail=1
 fi
 
 exit $fail

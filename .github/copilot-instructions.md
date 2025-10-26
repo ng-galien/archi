@@ -1,23 +1,24 @@
 # Copilot instructions for this repository (archi)
 
-This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There is no application code. Your job is to evolve the Markdown docs under `en/gdd/` and `fr/gdd/` with clear, concrete, domain-grounded examples — and maintain English translations alongside the original French.
+This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There is no application code. We use jekyll-polyglot to build a multilingual static site. Your job is to evolve the Markdown docs with clear, concrete, domain-grounded examples — and maintain English translations alongside the original French.
 
 ## What this repo contains
-- `fr/gdd/index.md` — essai principal (tables obèses → relations fonctionnelles, graphe + fonctions pures).
-- `fr/gdd/ddd-gdd.md` — tableau comparatif DDD vs modèle relationnel-fonctionnel (GDD).
-- English translations live under `en/gdd/` as mirror files: `en/gdd/index.md`, `en/gdd/ddd-gdd.md`.
+- `gdd/index.fr.md` — essai principal (tables obèses → relations fonctionnelles, graphe + fonctions pures).
+- `gdd/ddd-gdd.fr.md` — tableau comparatif DDD vs modèle relationnel-fonctionnel (GDD).
+- English translations live as sibling files with `*.en.md`: `gdd/index.en.md`, `gdd/ddd-gdd.en.md`.
 
 ## Bilingual policy (do this first)
-- Do not edit French sources under `fr/`. Maintain English counterparts under `en/`.
-- Mirror structure 1:1: same paths and filenames under `en/` and `fr/` (e.g., `en/gdd/<slug>.md` ↔ `fr/gdd/<slug>.md`), same H1/H2 outline, same examples adapted to English.
+- Do not edit French sources (`*.fr.md`) without need. Maintain English counterparts as sibling `*.en.md` files in the same folder.
+- Mirror structure 1:1: same paths and filenames (minus language suffix), same H1/H2 outline, same examples adapted to English.
 - Keep relation vocabulary unchanged (nodes Capitalized, relations UPPER_SNAKE with attributes), translate only surrounding prose.
-- Add a language switch at the top of each page, linking to its sibling in the other language (e.g., from `en/gdd/<slug>.md` to `fr/gdd/<slug>.md`).
+- Add a language switch at the top of each page, linking to its sibling in the other language. Prefer language-neutral links (Polyglot will relativize URLs per active language).
 
-### Language management
-- Put a language switch at the top of every English page (after the H1), linking to its sibling French file in `GDD/`.
-- For English pages, add front matter `lang: en` to improve accessibility/SEO in GitHub Pages.
-- From English pages, link to English targets when available; only link to French if no English page exists yet.
-- When adding a new English page, update the bilingual menus in `en/index.md` and `fr/index.md`.
+### Language management (jekyll-polyglot)
+- Each page must include front matter `lang: en` or `lang: fr`.
+- Use consistent permalinks across translations (either identical filenames and paths, or explicit `permalink:` in front matter) so Polyglot pairs them.
+- Optional: Use `page_id:` if you want different permalinks per language.
+- Language switchers: build neutral links (e.g., `../gdd/ddd-gdd.html`). Polyglot will keep users within their active language.
+- For English (default language), pages are served at the root (`/`); for French, under `/fr/`.
 
 ## Authoring conventions
 - Language: English for `*.en.md` (clear, pragmatic tone). French typography rules apply only to `*.fr.md`.
@@ -28,8 +29,8 @@ This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There i
   - Relations carry attributes (e.g., `amount`, `currency`, `valid_from`, `valid_to`). Absence of a link ≈ “no value” (avoid NULL).
   - Versioning/temporality by context: e.g., `HAS_PRICE@v2`, validity period.
   - Business as pure transformation: `[relations₀] → f → [relations₁]` (e.g., price → `HAS_EFFECTIVE_PRICE`; claim → `HAS_CLAIM_STATUS`).
-- File naming: kebab-case `.md` files under `en/gdd/` and `fr/gdd/` (no language suffix in filename; language is in the directory path). Add front matter `lang: en` for English pages.
-- Linking: use relative links. From English pages, link to English targets when available; you may cross-link to the French source for reference.
+- File naming: kebab-case `.md` files side-by-side, suffixed with `.en.md` and `.fr.md` under the same path (e.g., `gdd/ddd-gdd.en.md` and `gdd/ddd-gdd.fr.md`).
+- Linking: use relative, language-neutral links (e.g., `./ddd-gdd.html`). Polyglot rewrites links to the active language.
 
 ## Scope and guardrails
 - Don’t introduce runnable code, ORMs, or impl-specific details (conceptual repo).
@@ -50,12 +51,11 @@ This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There i
 - No build/tests. Verify Markdown rendering in the editor. Keep relative links functional and style consistent.
 
 ## GitHub Pages site (static docs)
-- Preferred: GitHub Actions with Jekyll (folder-based i18n: `en/` and `fr/`). No i18n plugin required.
+- Built with GitHub Actions and Jekyll + jekyll-polyglot.
 - Enable GitHub Pages in Settings → Pages → Source: GitHub Actions.
-- Workflow lives at `.github/workflows/pages.yml` and builds with Bundler + Jekyll.
-- `_config.yml` uses the Cayman theme. The landing `index.html` redirects to `/fr/` or `/en/` based on browser language. Menus are `en/index.md` and `fr/index.md` and link to `en/gdd/` and `fr/gdd/`.
-- Adding content: add pages under `en/gdd/` and `fr/gdd/`, then update `en/index.md` and `fr/index.md`.
-- Linking rules: use relative links (e.g., from `en/gdd/index.md` to `./ddd-gdd.md`). From English pages, link English targets; cross-link to French only if no English exists.
+- Workflow lives at `.github/workflows/pages.yml` (Ruby 3.3, Bundler 2.5, Jekyll build).
+- `_config.yml` uses the Cayman theme and Polyglot. Default language (EN) at root; FR under `/fr/`.
+- Landing page: English served at root (`/`), French under `/fr/`. No separate redirect file to avoid conflicts with Polyglot output.
 
 ## Local preview (developer loop)
 - Requirements: Ruby 3.3.0 (use rbenv) and Bundler 2.5+.
@@ -71,7 +71,7 @@ This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There i
 - Stop server: `./scripts/stop.sh`.
 - Verify pages: `./scripts/check.sh` (returns non-zero on failures). Update this script when you add pages to keep coverage meaningful.
 - Gems are installed to `vendor/bundle` and build output to `_site/` (both ignored by git).
-- When adding pages under `en/gdd/` or `fr/gdd/`, also update `en/index.md` and `fr/index.md`.
+- When adding pages, create both `*.fr.md` and `*.en.md` siblings and keep permalinks consistent. Update landing menus if needed.
 
 ### Local build (static export)
 - Build production output into `_site/`:
@@ -83,7 +83,7 @@ This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There i
 
 ## Automation & testing loop (for agents)
 - Contract:
-  - Inputs: Markdown files under `en/` and `fr/`.
+  - Inputs: Markdown files `*.en.md` and `*.fr.md` under the same paths.
   - Side effects: Start/stop local Jekyll; update `scripts/check.sh` when adding pages; keep links consistent.
   - Success: `./scripts/check.sh` returns 0; `serve.sh` launches without errors; no broken relative links.
 - Steps to self-test changes:
@@ -92,9 +92,9 @@ This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There i
   3) Run checks: `./scripts/check.sh` and inspect non-200s; adjust links or add routes to the list.
   4) Stop server: `./scripts/stop.sh`.
 - When adding a new page:
-  - Create `fr/gdd/<slug>.md` (source of truth) and `en/gdd/<slug>.md` (mirrored translation).
-  - Insert language switch links at the top of each file.
-  - Add entry links in `en/index.md` and `fr/index.md` menus.
+  - Create `gdd/<slug>.fr.md` (source of truth) and `gdd/<slug>.en.md` (mirrored translation) with the same permalink.
+  - Insert a language switch at the top of each file.
+  - Update landing menus if applicable.
   - Update `scripts/check.sh` to include the new endpoints (both EN and FR variants) and re-run checks.
 
 ## Quality gates

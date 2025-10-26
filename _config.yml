@@ -1,24 +1,30 @@
 title: Graph-Driven Design (GDD)
 description: Bilingual knowledge base (FR/EN) on relation-centric graph modeling and functional transformations.
-# Use a built-in GitHub Pages theme to avoid extra plugins
+# Use a built-in GitHub Pages theme
 theme: jekyll-theme-cayman
 markdown: kramdown
 kramdown:
   input: GFM
   hard_wrap: false
-plugins: []
+plugins:
+  - jekyll-polyglot
 exclude:
   - .github/
   - README.md
+  - _site
+  - vendor
+  - scripts
 
-# Multilingual structure (manual, no external plugins)
- # Multilingual handled via folder structure en/ and fr/
-defaults:
-  - scope:
-      path: "en"
-    values:
-      lang: "en"
-  - scope:
-      path: "fr"
-    values:
-      lang: "fr"
+# Multilingual via Polyglot
+languages: ["en", "fr"]
+default_lang: "en"
+exclude_from_localization: [".github", "_site", "vendor", "scripts", "assets", "sitemap.xml", "robots.txt"]
+
+# Production URL and baseurl (GitHub Pages project)
+# Adjust owner/repo if the repository is renamed or moved
+url: "https://ng-galien.github.io"
+baseurl: "/archi"
+
+# Disable CSS sourcemaps to avoid Jekyll 4 + Polyglot issue
+sass:
+  sourcemap: never

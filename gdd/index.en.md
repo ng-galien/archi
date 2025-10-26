@@ -1,10 +1,14 @@
 ---
 lang: en
+page_id: gdd-index
+permalink: /gdd/
 ---
 
 # From Bloated Tables to Functional Relations: Toward a More Natural, Evolvable Data Model
 
-English | [Français](../../fr/gdd/index.md)
+English | [Français](../fr/gdd/index.html)
+
+{% comment %} Content migrated from en/gdd/index.md {% endcomment %}
 
 ## Introduction
 
@@ -66,18 +70,6 @@ Example: a pricing calculation transforms links (Product → CHANNEL → PERIOD)
 
 Existing relations tell the past; new ones describe the present. A business journey becomes a composition: [relations₀] → function1 → [relations₁] → function2 → [relations₂]. Persistence is just synchronization: accumulate facts (append‑only) rather than overwrite history.
 
-Benefits:
-
-- Predictability: each function is deterministic and testable in isolation, reducing bugs.
-- Traceability: the history of transformations offers natural auditability, useful for compliance (e.g., GDPR).
-- Business alignment: we think in flows (“Transform this contract into a re‑evaluated status”), which reads more clearly and robustly.
-
-Insurance example: a pure function takes (Contract → CLAIM → COVERAGE) and yields a new relation HAS_CLAIM_STATUS, composable with others (e.g., for a payment).
-
-## Conclusion
-
-This combined approach—graphs for structure, pure functions for logic—complements relational modeling rather than replacing it. It offers a gentle evolution suited to data‑first teams, making variability manageable and aligned with business reality. In a world of interconnected, dynamic data, adopting this mindset can reduce technical debt and foster innovation. To implement, start with a POC in a sub‑domain, using hybrid tools (PostgreSQL with graph‑like extensions, or Neo4j alongside). How will you apply these ideas in your projects? This paper invites ongoing reflection toward living, natural models.
-
 ## See also
 
-- Comparison: [DDD vs GDD](./ddd-gdd.md)
+- Comparison: [DDD vs GDD](./ddd-gdd.html)

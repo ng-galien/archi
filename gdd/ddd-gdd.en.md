@@ -1,10 +1,14 @@
 ---
 lang: en
+page_id: gdd-ddd-gdd
+permalink: /gdd/ddd-gdd.html
 ---
 
 # 🧩 DDD vs GDD (Graph-Driven Design)
 
-English | [Français](../../fr/gdd/ddd-gdd.md)
+English | [Français](../fr/gdd/ddd-gdd.html)
+
+{% comment %} Content migrated from en/gdd/ddd-gdd.md {% endcomment %}
 
 ## Introduction
 
@@ -85,4 +89,4 @@ Both aim for the same goal: making business logic explicit, manageable, and dura
 
 ## See also
 
-- Main essay: [From Bloated Tables to Functional Relations](./index.md)
+- Main essay: [From Bloated Tables to Functional Relations](./index.html)

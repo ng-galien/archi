@@ -1,4 +1,14 @@
+---
+lang: fr
+page_id: gdd-index
+permalink: /gdd/
+---
+
 # Des Tables Obèses aux Relations Fonctionnelles : Pour une Modélisation de Données Plus Naturelle et Évolutive
+
+[English](../gdd/index.html) | Français
+
+{% comment %} Contenu migré depuis fr/gdd/index.md {% endcomment %}
 
 ## Introduction
 
@@ -58,13 +68,6 @@ Développement : Un calcul de prix transforme les liens (Product -> CHANNEL -> P
 
 Les relations existantes racontent le passé ; les nouvelles décrivent le présent. Un parcours métier devient une composition : [relations₀] → fonction1 → [relations₁] → fonction2 → [relations₂]. La persistance n'est qu'une synchronisation : accumuler les faits (append-only), sans écraser l'historique.
 
-Avantages développés :
-- **Prévisibilité** : Chaque fonction est déterministe et testable isolément, réduisant les bugs.
-- **Traçabilité** : L'historique des transformations offre un audit naturel, utile pour la compliance (e.g., GDPR).
-- **Alignement métier** : On raisonnes en flux ("Transformer ce contrat en statut réévalué"), rendant le modèle plus lisible et robuste.
+## Voir aussi
 
-Exemple : Dans un système d'assurance, une fonction pure prend (Contrat -> SINISTRE -> COUVERTURE) et produit une nouvelle relation HAS_CLAIM_STATUS, composable avec d'autres (e.g., pour un paiement).
-
-## Conclusion
-
-Cette approche combinée – graphes pour la structure, fonctions pures pour la logique – complète le relationnel sans le remplacer. Elle offre une évolution douce, adaptée aux équipes data-first, en rendant la variabilité maniable et alignée au métier. Dans un monde où les données sont interconnectées et dynamiques, adopter cette pensée peut réduire la dette technique et favoriser l'innovation. Pour implémenter, commencez par un POC sur un sous-domaine, en utilisant des outils hybrides (PostgreSQL avec extensions graph, ou Neo4j intégré). Et vous, comment appliquez-vous ces idées dans vos projets ? Ce papier invite à une réflexion continue pour des modèles vivants et naturels.
+- Comparatif : [DDD vs GDD](./ddd-gdd.html)

@@ -1,6 +1,14 @@
-
+---
+lang: fr
+page_id: gdd-ddd-gdd
+permalink: /gdd/ddd-gdd.html
+---
 
 # 🧩 DDD vs GDD (Graph-Driven Design)
+
+[English](../gdd/ddd-gdd.html) | Français
+
+{% comment %} Contenu migré depuis fr/gdd/ddd-gdd.md {% endcomment %}
 
 ## Introduction
 
