@@ -50,8 +50,13 @@ This repo is a bilingual knowledge base about Graph-Driven Design (GDD). There i
 - No build/tests. Verify Markdown rendering in the editor. Keep relative links functional and style consistent.
 
 ## GitHub Pages site (static docs)
-- Publishing: enable GitHub Pages in Settings → Pages. Choose Branch: `main`, Folder: `/ (root)`.
-- Config: `_config.yml` sets a built-in theme (no plugins), Markdown options, and language defaults for `/en` and `/fr`. `.github/` is excluded from the site.
-- Landing: `index.html` at repo root redirects to `/fr/` or `/en/` based on browser language. The language menus live at `en/index.md` and `fr/index.md`, which link to docs under `en/gdd/` and `fr/gdd/`.
-- Adding content: keep all content pages under `en/gdd/` and `fr/gdd/`. When a new page is added or translated, add links in both `en/index.md` and `fr/index.md`.
-- Linking rules on site: use relative links (e.g., from `en/gdd/index.md` to `./ddd-gdd.md`). From English pages, link to English targets when available; cross-link to the French source only if no English page exists yet.
+- Preferred: GitHub Actions with Jekyll + multilingual plugin.
+- Enable GitHub Pages in Settings → Pages → Source: GitHub Actions.
+- Workflow lives at `.github/workflows/pages.yml` and builds with Bundler + Jekyll.
+- `_config.yml` enables `jekyll-multiple-languages-plugin`, sets `languages: ["en","fr"]`, `default_lang: en`, and directory defaults.
+- Landing: `index.html` redirects to `/fr/` or `/en/` based on browser language. Menus are `en/index.md` and `fr/index.md` and link to `en/gdd/` and `fr/gdd/`.
+- Adding content: add pages under `en/gdd/` and `fr/gdd/`, then update `en/index.md` and `fr/index.md`.
+- Linking rules: use relative links (e.g., from `en/gdd/index.md` to `./ddd-gdd.md`). From English pages, link English targets; cross-link to French only if no English exists.
+
+### Alternative: deploy from a branch (no Actions)
+- Works without plugins; not recommended here since we rely on `jekyll-multiple-languages-plugin`.

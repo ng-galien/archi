@@ -14,14 +14,15 @@ This repository is a bilingual (FR/EN) knowledge base about Graph-Driven Design 
   - Essai principal : ./fr/gdd/index.md
   - Comparatif : ./fr/gdd/ddd-gdd.md
 
-## GitHub Pages
+## GitHub Pages (via Actions + Jekyll plugin)
 
-To publish these docs as a static site:
+This site uses GitHub Actions to build with Jekyll and the multi-language plugin.
 
-1) In GitHub: Settings → Pages → Build and deployment
-2) Set Source to "Deploy from a branch"
-3) Select Branch: `main`, Folder: `/ (root)`
+Enable publishing:
 
-The site will use the built-in Cayman theme configured in `_config.yml`. The root `index.html` redirects to `/fr/` or `/en/` based on browser language, and the language menus live at `fr/index.md` and `en/index.md`.
+1) In GitHub: Settings → Pages → Source: GitHub Actions
+2) Push to `main` to trigger the workflow `.github/workflows/pages.yml`
+
+The site uses the built-in Cayman theme configured in `_config.yml`. The root `index.html` redirects to `/fr/` or `/en/` based on browser language, and the language menus live at `fr/index.md` and `en/index.md`.
 
 Contributions: keep French sources under `fr/` authoritative; add mirrored English pages under `en/` with the same paths (e.g., `fr/gdd/<slug>.md` ↔ `en/gdd/<slug>.md`). Use relative links throughout.
