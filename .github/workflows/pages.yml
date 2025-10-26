@@ -30,8 +30,7 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
-      - name: Install dependencies
-        run: bundle install --without development:test
+      # bundler-cache above performs bundle install; explicit step not required
 
       - name: Build site with Jekyll
         env:
