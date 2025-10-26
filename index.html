@@ -2,17 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=/en/" />
+  <!-- Use a relative redirect so it works under project pages (e.g., /archi/) -->
+  <meta http-equiv="refresh" content="0; url=./en/" />
     <title>Redirecting…</title>
     <script>
       (function () {
         try {
-          var userLang = navigator.language || navigator.userLanguage || '';
-          var target = '/en/';
-          if (userLang.toLowerCase().startsWith('fr')) target = '/fr/';
+          var userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+          // Base path for project pages: keep whatever path we're currently in (e.g., /archi/)
+          var path = window.location.pathname || '/';
+          // Ensure trailing slash for base
+          if (!path.endsWith('/')) path += '/';
+          var base = path;
+          var lang = userLang.startsWith('fr') ? 'fr' : 'en';
+          var target = base + lang + '/';
           window.location.replace(target);
         } catch (e) {
-          // fallback to meta refresh
+          // fallback to meta refresh (relative)
         }
       })();
     </script>
