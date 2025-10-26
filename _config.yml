@@ -1,0 +1,24 @@
+title: Graph-Driven Design (GDD)
+description: Bilingual knowledge base (FR/EN) on relation-centric graph modeling and functional transformations.
+# Use a built-in GitHub Pages theme to avoid extra plugins
+theme: jekyll-theme-cayman
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+plugins: []
+exclude:
+  - .github/
+  - README.md
+
+# Multilingual structure (manual, no external plugins)
+languages: ["en", "fr"]
+defaults:
+  - scope:
+      path: "en"
+    values:
+      lang: "en"
+  - scope:
+      path: "fr"
+    values:
+      lang: "fr"

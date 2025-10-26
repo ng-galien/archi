@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0; url=/en/" />
+    <title>Redirecting…</title>
+    <script>
+      (function () {
+        try {
+          var userLang = navigator.language || navigator.userLanguage || '';
+          var target = '/en/';
+          if (userLang.toLowerCase().startsWith('fr')) target = '/fr/';
+          window.location.replace(target);
+        } catch (e) {
+          // fallback to meta refresh
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to your language… If nothing happens, visit <a href="/en/">English</a> or <a href="/fr/">Français</a>.</p>
+  </body>
+</html>
