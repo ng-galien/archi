@@ -1,34 +1,40 @@
 # Agent instructions for this repository (archi)
 
 ## Repository focus
-- `archi` is a bilingual GitHub Pages blog covering multiple technical themes such as software architecture, relational modeling, AI tools, and engineering practices. Work only on Markdown docs; keep examples grounded in Product/Order-style nodes, relations, and attributes.
-- Treat French pages as the canonical source, but evolve their English mirrors at the same time so both languages stay aligned after every change.
+
+- `archi` is a bilingual (FR/EN) personal coding blog. Short posts live under `_posts/{en,fr}/`, longer deep-dive articles under `_articles/`.
+- Graph-Driven Design (GDD) is one deep-dive article, not the site’s topic. Keep examples practical (Products, Orders, Pricing) when needed.
+- French pages are canonical; always mirror edits in English to keep both languages aligned.
 
 ## Bilingual workflow
-- Each page lives as `*.fr.md` and `*.en.md` siblings in the same folder sharing the same slug/permalink. Front matter always declares `lang`, `page_id`, and `permalink`.
-- At the top of every page, render a `<div class="language-switch">` that links to the sibling file using relative, language-neutral URLs so Polyglot can rewrite them.
-- Mirror structure 1:1 (headings, sections, tables). Keep relation vocabulary untouched (nodes Capitalized, relations UPPER_SNAKE). Only translate prose and surrounding narrative.
+
+- Every page has `*.fr.md` and `*.en.md` siblings sharing the same slug/permalink. Front matter should define `lang`, `page_id`, `permalink`, and optional `nav_section`.
+- Add a top-of-page language switch using language-neutral Liquid links (use the `relative_url` filter); do not hard-code `/fr` or `/en` in URLs.
+- Mirror structure 1:1 (headings, sections, tables). Translate prose only—leave code/identifiers unchanged.
 
 ## Layout & styling
-- All pages inherit `_layouts/default.html`, which provides the header, bilingual nav, skip link, and footer. Do not reintroduce Cayman or inline styling.
-- Extend or tweak visuals exclusively through `assets/css/main.scss`, using the existing Inter-based typography, neutral palette, and responsive card layout.
-- Maintain the minimalist developer-blog aesthetic: subtle gradients, soft cards, high readability, and accessible contrasts.
+
+- All pages use `_layouts/default.html` for header, bilingual nav, skip link, and footer. Don’t reintroduce Cayman or inline styles.
+- Make visual tweaks only in `assets/css/main.scss` to keep the Inter typography, neutral palette, and card layout consistent.
 
 ## Linking & navigation
-- Use relative, language-neutral links (e.g., `{{ '/articles/gdd/' | relative_url }}`, `{{ '/blog/' | relative_url }}`). Polyglot rewrites them according to the active locale.
-- When adding new primary sections, update the nav labels (both EN and FR variants) inside the layout so the header links stay in sync.
-- Keep permalinks consistent between languages or use shared `page_id` values when necessary.
 
-## Workflow & validation
-- Toolchain: Ruby 3.3.0 with Bundler 2.7.2 (matches `Gemfile.lock`). Install/activate these before running any scripts.
-- Preview locally via `./scripts/serve.sh` (daemon) or `./scripts/serve.sh --foreground`; stop with `./scripts/stop.sh`.
-- Verify endpoints using `./scripts/check.sh`. Append any new EN/FR paths you introduce so curl checks remain comprehensive.
-- Build artifacts live in `_site/` and dependencies in `vendor/bundle`; both are ignored by git.
+- Use language-neutral Liquid links like `{{ '/articles/gdd/' | relative_url }}` and `{{ '/blog/' | relative_url }}` so Polyglot rewrites them per locale.
+- When adding primary sections, update the EN/FR nav labels in `_layouts/default.html` so the header matches.
+- Keep identical permalinks across languages, or bind pages via a shared `page_id`.
+
+## Developer workflow
+
+- Prereqs: Ruby 3.3.x and Bundler. Scripts install Bundler if missing and vendor-install gems to `vendor/bundle/`.
+- Local preview (foreground default): `./scripts/serve.sh`. Background mode: `./scripts/serve.sh --daemon`. Stop background server: `./scripts/stop.sh`.
+- Static build: `./scripts/build.sh` (outputs to `_site/`).
+- Endpoint checks: `./scripts/check.sh` (uses `BASE_URL=http://127.0.0.1:4000/archi` by default). Add new EN/FR URLs there when introducing pages.
 
 ## Scope guardrails
-- Topics may cover a variety of technology and design subjects beyond Graph-Driven Design, including software architecture, modeling, AI tools, and engineering best practices.
-- No application code, ORMs, or diagram tooling—stick to Markdown, tables, and plain text. Diagrams are expressed via Markdown constructs only.
-- Present content with a pragmatic and concrete tone grounded in domain scenarios (pricing, orders, fulfillment, etc.).
+
+- This is a static Jekyll site. Avoid adding app runtimes/frameworks; keep content in Markdown with minimal HTML.
+- Code samples are encouraged in posts/articles, but don’t add build pipelines beyond Jekyll.
 
 ## Quality bar
-- A change is complete when the Jekyll server starts cleanly, bilingual pages remain aligned, language-switch links work, and the rendering respects the overall style and design system of the blog.
+
+- Done when: local server starts cleanly, checks pass, FR/EN pages remain aligned, language-switch links work, and styling remains consistent with the custom layout.

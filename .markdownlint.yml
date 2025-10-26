@@ -1,0 +1,22 @@
+IPdefault: true
+
+# Repo-specific adjustments
+MD003: false
+MD013: false
+MD033:
+  allowed_elements:
+    - div
+    - span
+    - a
+    - ul
+    - li
+    - p
+MD041: false # Don't require a top-level heading; pages may start differently
+MD036: false # Allow emphasis for subhead-like text in articles
+MD025: false # Allow multiple top-level headings when needed (indexes)
+MD024:
+  siblings_only: true # Allow duplicate headings under different parents
+MD007:
+  indent: 2
+MD029: false
+MD032: false

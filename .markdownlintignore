@@ -1,0 +1,9 @@
+# Build and vendor outputs
+_site/
+vendor/
+.tmp/
+tmp/
+**/node_modules/
+**/.git/
+# Generated site mirrors
+fr/
