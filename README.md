@@ -45,4 +45,32 @@ gh run view --workflow pages.yml --log
 gh run list --workflow pages.yml --json url -q '.[0].url' | xargs open
 ```
 
+## Local preview
+
+Prerequisites: Ruby 3.3.x, Bundler.
+
+- Install Bundler (if needed):
+
+```zsh
+gem install bundler
+```
+
+- Serve locally with live reload:
+
+```zsh
+./scripts/serve.sh
+```
+
+- Output folder `_site/` and `vendor/bundle/` are ignored by git (see `.gitignore`).
+
+### Local build (static export)
+
+Produce a fresh static build into `_site/`:
+
+```zsh
+./scripts/build.sh
+```
+
+Then open `./_site/index.html` in your browser or serve the folder with any static server.
+
 Contributions: keep French sources under `fr/` authoritative; add mirrored English pages under `en/` with the same paths (e.g., `fr/gdd/<slug>.md` ↔ `en/gdd/<slug>.md`). Use relative links throughout.

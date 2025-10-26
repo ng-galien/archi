@@ -6,20 +6,13 @@ markdown: kramdown
 kramdown:
   input: GFM
   hard_wrap: false
-plugins:
-  - jekyll-multiple-languages-plugin
+plugins: []
 exclude:
   - .github/
   - README.md
 
 # Multilingual structure (manual, no external plugins)
-languages: ["en", "fr"]
-default_lang: "en"
-exclude_from_localizations:
-  - .github
-  - node_modules
-  - Gemfile
-  - Gemfile.lock
+ # Multilingual handled via folder structure en/ and fr/
 defaults:
   - scope:
       path: "en"

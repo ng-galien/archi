@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+# Align local and CI on the same Ruby version
 ruby "3.3.0"
 
 gem "jekyll", "~> 4.3"
