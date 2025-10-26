@@ -1,3 +1,4 @@
+---
 lang: en
 page_id: article-ddd-vs-gdd
 title: DDD vs GDD (Graph-Driven Design)
@@ -9,9 +10,7 @@ weight: 20
 
 # 🧩 DDD vs GDD (Graph-Driven Design)
 
-<div class="language-switch">English | [Français]({{ '/fr/articles/ddd-vs-gdd/' | relative_url }})</div>
-
-{% comment %} Content migrated from en/gdd/ddd-gdd.md {% endcomment %}
+{% comment %} Content migrated from en/ddd-vs-gdd/index.md {% endcomment %}
 
 ## Introduction
 

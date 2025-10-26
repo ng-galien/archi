@@ -4,6 +4,10 @@ set -euo pipefail
 # Local Jekyll build with Bundler
 # Usage: ./scripts/build.sh
 
+# Ensure we run from repository root
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
+cd "$ROOT_DIR"
+
 # Ensure bundler is present
 if ! command -v bundle >/dev/null 2>&1; then
   echo "Bundler not found. Installing..."

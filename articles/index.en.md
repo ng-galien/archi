@@ -7,9 +7,9 @@ nav_section: articles
 description: Long-form essays on graph-driven modeling and data architecture.
 ---
 
-# Deep Dives
+# Deep-Dive Articles
 
-Explore opinionated, long-form essays that anchor the Graph-Driven Design approach.
+Longer-form explorations of software design and architecture.
 
 {% assign localized_articles = site.articles | where: 'lang', page.lang | sort: 'weight' %}
 {% if localized_articles.size == 0 %}

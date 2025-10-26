@@ -1,3 +1,4 @@
+---
 lang: en
 page_id: article-gdd
 title: From Bloated Tables to Functional Relations
@@ -8,8 +9,6 @@ weight: 10
 ---
 
 # From Bloated Tables to Functional Relations: Toward a More Natural, Evolvable Data Model
-
-<div class="language-switch">English | [Français]({{ '/fr/articles/gdd/' | relative_url }})</div>
 
 {% comment %} Content migrated from en/gdd/index.md {% endcomment %}
 

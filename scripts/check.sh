@@ -15,8 +15,8 @@ URLS=(
   "/fr/articles/ddd-vs-gdd/"
   "/blog/"
   "/fr/blog/"
-  "/blog/why-split-blog-and-deep-dives/"
-  "/fr/blog/pourquoi-scinder-blog-et-articles/"
+  "/2024/06/10/why-blog-and-deep-dives.html"
+  "/fr/2024/06/10/pourquoi-scinder-blog-et-articles.html"
 )
 
 fail=0

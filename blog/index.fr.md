@@ -4,7 +4,7 @@ page_id: blog-index
 title: Blog
 permalink: /blog/
 nav_section: blog
-description: Billets courts, retours de terrain et notes de travail autour de GDD.
+description: Billets courts, retours de terrain et notes de travail.
 ---
 
 # Blog
@@ -26,4 +26,4 @@ _Aucun billet pour l’instant — les premiers arrivent bientôt._
 </ul>
 {% endif %}
 
-<div class="section-note">Envie d’essais plus complets ? Parcourez les <a href="{{ '/fr/articles/' | relative_url }}">articles de fond</a>.</div>
+<div class="section-note">Envie d'essais plus complets ? Parcourez les <a href="{{ '/articles/' | relative_url }}">articles de fond</a>.</div>

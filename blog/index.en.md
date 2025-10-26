@@ -4,12 +4,12 @@ page_id: blog-index
 title: Blog
 permalink: /blog/
 nav_section: blog
-description: Short takes, changelog entries, and field notes around GDD.
+description: Short takes, changelog entries, and field notes.
 ---
 
-# Blog
+# Blog Posts
 
-Bite-sized notes, changelog entries, and experiments in progress.
+Short reflections, tips, and updates.
 
 {% assign localized_posts = site.posts | where: 'lang', page.lang %}
 {% if localized_posts.size == 0 %}

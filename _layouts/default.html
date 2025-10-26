@@ -35,17 +35,17 @@
       {% assign articles_href = lang_prefix | append: '/articles/' %}
       {% assign blog_href = lang_prefix | append: '/blog/' %}
       {% if page.lang == 'fr' %}
-        {% assign nav_labels = 'Accueil|Articles de fond|Blog' | split: '|' %}
+        {% assign nav_labels = 'Accueil|Articles|Blog' | split: '|' %}
       {% else %}
-        {% assign nav_labels = 'Home|Deep dives|Blog' | split: '|' %}
+        {% assign nav_labels = 'Home|Articles|Blog' | split: '|' %}
       {% endif %}
       {% assign current_section = page.nav_section | default: page.page_id %}
       <header class="site-header">
         <a class="brand" href="{{ home_href | relative_url }}">
-          <span class="brand-mark">GDD</span>
+          <span class="brand-mark">Ar</span>
           <span class="brand-copy">
-            <span class="brand-title">{{ site.title }}</span>
-            <span class="brand-tagline">{{ site.description }}</span>
+            <span class="brand-title is-quiet">{{ site.title }}</span>
+            <span class="brand-tagline is-quiet">{{ site.description }}</span>
           </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
@@ -71,6 +71,43 @@
             {{ nav_labels[2] }}
           </a>
         </nav>
+        {% if page.lang %}
+        <div class="language-switch language-switch--header" style="margin-left:auto;font-size:.85rem;opacity:.85;">
+          {% if page.lang == 'en' %}
+            <span class="active-lang">EN</span>
+            |
+            {% if page.page_id == 'home' %}
+              <a {% static_href %}href="{{ site.baseurl }}/fr/"{% endstatic_href %}>FR</a>
+            {% elsif page.page_id == 'articles-index' %}
+              <a {% static_href %}href="{{ '/fr/articles/' | relative_url }}"{% endstatic_href %}>FR</a>
+            {% elsif page.page_id == 'blog-index' %}
+              <a {% static_href %}href="{{ '/fr/blog/' | relative_url }}"{% endstatic_href %}>FR</a>
+            {% elsif page.page_id %}
+              {% if page.url contains '/en/' %}
+                <a {% static_href %}href="{{ page.url | replace: '/en/', '/fr/' | relative_url }}"{% endstatic_href %}>FR</a>
+              {% else %}
+                <a {% static_href %}href="{{ page.url | prepend: '/fr' | relative_url }}"{% endstatic_href %}>FR</a>
+              {% endif %}
+            {% else %}
+              <a {% static_href %}href="{{ page.url | prepend: '/fr' | relative_url }}"{% endstatic_href %}>FR</a>
+            {% endif %}
+          {% else %}
+            {% if page.page_id == 'home' %}
+              <a {% static_href %}href="{{ site.baseurl }}/"{% endstatic_href %}>EN</a>
+            {% elsif page.page_id == 'articles-index' %}
+              <a {% static_href %}href="{{ '/articles/' | relative_url }}"{% endstatic_href %}>EN</a>
+            {% elsif page.page_id == 'blog-index' %}
+              <a {% static_href %}href="{{ '/blog/' | relative_url }}"{% endstatic_href %}>EN</a>
+            {% elsif page.page_id %}
+              <a {% static_href %}href="{{ page.url | replace: '/fr/', '/' | relative_url }}"{% endstatic_href %}>EN</a>
+            {% else %}
+              <a {% static_href %}href="{{ page.url | remove: '/fr' | relative_url }}"{% endstatic_href %}>EN</a>
+            {% endif %}
+            |
+            <span class="active-lang">FR</span>
+          {% endif %}
+        </div>
+        {% endif %}
       </header>
 
       <main id="main-content" class="site-main">

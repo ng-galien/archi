@@ -2,20 +2,27 @@
 lang: fr
 page_id: home
 permalink: /
+nav_section: home
 ---
 
-# Graph-Driven Design (GDD)
+# Blog personnel
 
-<div class="language-switch">[English](../) | Français</div>
-
-Bienvenue sur la page d’accueil en français. Parcourez les documents ci‑dessous.
+Bienvenue sur mon blog consacré au code et à la conception logicielle.  
+J’y note quelques réflexions, essais et expériences techniques au fil du temps.
 
 ## Contenus
 
-- Articles de fond : consultez la [section dédiée]({{ '/fr/articles/' | relative_url }}) pour les papiers retravaillés.
-- Billets légers : suivez le [blog]({{ '/fr/blog/' | relative_url }}) pour les notes rapides et mises à jour.
+- [Articles]({{ '/articles/' | relative_url }}) : textes un peu plus développés, souvent autour de la modélisation ou de l’architecture.  
+- [Billets courts]({{ '/blog/' | relative_url }}) : notes rapides, idées en cours ou simples remarques.
 
-### À (re)lire en priorité
+## À la une
 
-- Essai principal : [Des Tables Obèses aux Relations Fonctionnelles]({{ '/fr/articles/gdd/' | relative_url }})
-- Comparatif : [DDD vs GDD]({{ '/fr/articles/ddd-vs-gdd/' | relative_url }})
+- **Article** : [Des Tables Obèses aux Relations Fonctionnelles]({{ '/articles/gdd/' | relative_url }})  
+  → Sur la modélisation des données par relations plutôt que par objets.
+
+- **Comparatif** : [DDD vs GDD]({{ '/articles/ddd-vs-gdd/' | relative_url }})  
+  → Une mise en perspective entre le Domain-Driven Design et l’approche orientée graphe.
+
+---
+
+*(Un blog sans prétention, juste pour garder une trace de mes réflexions techniques.)*

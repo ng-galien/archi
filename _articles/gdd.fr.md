@@ -1,3 +1,4 @@
+---
 lang: fr
 page_id: article-gdd
 title: Des Tables Obèses aux Relations Fonctionnelles
@@ -8,8 +9,6 @@ weight: 10
 ---
 
 # Des Tables Obèses aux Relations Fonctionnelles : Pour une Modélisation de Données Plus Naturelle et Évolutive
-
-<div class="language-switch">[English]({{ '/articles/gdd/' | relative_url }}) | Français</div>
 
 {% comment %} Contenu migré depuis fr/gdd/index.md {% endcomment %}
 

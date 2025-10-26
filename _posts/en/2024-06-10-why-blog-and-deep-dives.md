@@ -7,7 +7,8 @@ permalink: /blog/why-split-blog-and-deep-dives/
 
 # Why Split the Blog from Deep Dives
 
-<div class="language-switch">English | [Français]({{ '/fr/blog/pourquoi-scinder-blog-et-articles/' | relative_url }})</div>
+
+{% comment %} Content migrated from en/blog/why-split-blog-and-deep-dives/index.md {% endcomment %}
 
 Shifting the site to a two-track setup makes room for fast iterations without watering down the long-form work.
 

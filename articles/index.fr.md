@@ -4,12 +4,12 @@ page_id: articles-index
 title: Articles de fond
 permalink: /articles/
 nav_section: articles
-description: Essais approfondis sur la modélisation orientée graphes et l’architecture de données.
+description: Essais approfondis sur la modélisation orientée graphes et l'architecture de données.
 ---
 
 # Articles de fond
 
-Retrouvez ici les essais fouillés qui structurent l’approche Graph-Driven Design.
+Retrouvez ici les essais fouillés sur le design logiciel et la modélisation de données.
 
 {% assign localized_articles = site.articles | where: 'lang', page.lang | sort: 'weight' %}
 {% if localized_articles.size == 0 %}
