@@ -7,8 +7,16 @@ BASE_URL=${BASE_URL:-"http://127.0.0.1:4000/archi"}
 URLS=(
   "/"
   "/fr/"
-  "/gdd/"
-  "/fr/gdd/"
+  "/articles/"
+  "/fr/articles/"
+  "/articles/gdd/"
+  "/fr/articles/gdd/"
+  "/articles/ddd-vs-gdd/"
+  "/fr/articles/ddd-vs-gdd/"
+  "/blog/"
+  "/fr/blog/"
+  "/blog/why-split-blog-and-deep-dives/"
+  "/fr/blog/pourquoi-scinder-blog-et-articles/"
 )
 
 fail=0
@@ -23,33 +31,5 @@ for path in "${URLS[@]}"; do
     echo "[OK]   $url"
   fi
 done
-
-# DDD-GDD page may be written as canonical or language-suffixed depending on build state
-EN_PATHS=("/gdd/ddd-gdd.html" "/gdd/ddd-gdd.en.html")
-FR_PATHS=("/fr/gdd/ddd-gdd.html" "/fr/gdd/ddd-gdd.fr.html")
-
-for path in "${EN_PATHS[@]}"; do
-  code=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL%/}${path}" || echo "000")
-  if [[ "$code" == "200" ]]; then
-    echo "[OK]   ${BASE_URL%/}${path}"
-    break
-  fi
-done
-if [[ "$code" != "200" ]]; then
-  echo "[FAIL] English DDD-GDD not found at ${EN_PATHS[*]}"
-  fail=1
-fi
-
-for path in "${FR_PATHS[@]}"; do
-  code=$(curl -s -o /dev/null -w "%{http_code}" "${BASE_URL%/}${path}" || echo "000")
-  if [[ "$code" == "200" ]]; then
-    echo "[OK]   ${BASE_URL%/}${path}"
-    break
-  fi
-done
-if [[ "$code" != "200" ]]; then
-  echo "[FAIL] French DDD-GDD not found at ${FR_PATHS[*]}"
-  fail=1
-fi
 
 exit $fail

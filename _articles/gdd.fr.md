@@ -1,12 +1,15 @@
----
 lang: fr
-page_id: gdd-index
-permalink: /gdd/
+page_id: article-gdd
+title: Des Tables Obèses aux Relations Fonctionnelles
+description: Article de fond sur le Graph-Driven Design et le déplacement de la variabilité vers les relations.
+permalink: /articles/gdd/
+nav_section: articles
+weight: 10
 ---
 
 # Des Tables Obèses aux Relations Fonctionnelles : Pour une Modélisation de Données Plus Naturelle et Évolutive
 
-[English](../gdd/index.html) | Français
+<div class="language-switch">[English]({{ '/articles/gdd/' | relative_url }}) | Français</div>
 
 {% comment %} Contenu migré depuis fr/gdd/index.md {% endcomment %}
 
@@ -70,4 +73,4 @@ Les relations existantes racontent le passé ; les nouvelles décrivent le prés
 
 ## Voir aussi
 
-- Comparatif : [DDD vs GDD](./ddd-gdd.html)
+- Comparatif : [DDD vs GDD]({{ '/articles/ddd-vs-gdd/' | relative_url }})

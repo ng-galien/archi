@@ -6,6 +6,9 @@ markdown: kramdown
 kramdown:
   input: GFM
   hard_wrap: false
+collections:
+  articles:
+    output: true
 plugins:
   - jekyll-polyglot
 exclude:
@@ -19,6 +22,22 @@ exclude:
 languages: ["en", "fr"]
 default_lang: "en"
 exclude_from_localization: [".github", "_site", "vendor", "scripts", "assets", "sitemap.xml", "robots.txt"]
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: "articles"
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: default
 
 # Production URL and baseurl (GitHub Pages project)
 # Adjust owner/repo if the repository is renamed or moved

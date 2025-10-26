@@ -1,7 +1,7 @@
-# Copilot instructions for this repository (archi)
+# Agent instructions for this repository (archi)
 
 ## Repository focus
-- `archi` is a bilingual Jekyll + Polyglot blog about Graph-Driven Design (relation-centric modeling + pure transformations). Work only on Markdown docs; keep examples grounded in Product/Order-style nodes, relations, and attributes.
+- `archi` is a bilingual GitHub Pages blog covering multiple technical themes such as software architecture, relational modeling, AI tools, and engineering practices. Work only on Markdown docs; keep examples grounded in Product/Order-style nodes, relations, and attributes.
 - Treat French pages as the canonical source, but evolve their English mirrors at the same time so both languages stay aligned after every change.
 
 ## Bilingual workflow
@@ -15,7 +15,7 @@
 - Maintain the minimalist developer-blog aesthetic: subtle gradients, soft cards, high readability, and accessible contrasts.
 
 ## Linking & navigation
-- Use relative, language-neutral links (e.g., `./gdd/index.html`, `../gdd/ddd-gdd.html`). Polyglot rewrites them according to the active locale.
+- Use relative, language-neutral links (e.g., `{{ '/articles/gdd/' | relative_url }}`, `{{ '/blog/' | relative_url }}`). Polyglot rewrites them according to the active locale.
 - When adding new primary sections, update the nav labels (both EN and FR variants) inside the layout so the header links stay in sync.
 - Keep permalinks consistent between languages or use shared `page_id` values when necessary.
 
@@ -26,9 +26,9 @@
 - Build artifacts live in `_site/` and dependencies in `vendor/bundle`; both are ignored by git.
 
 ## Scope guardrails
+- Topics may cover a variety of technology and design subjects beyond Graph-Driven Design, including software architecture, modeling, AI tools, and engineering best practices.
 - No application code, ORMs, or diagram tooling—stick to Markdown, tables, and plain text. Diagrams are expressed via Markdown constructs only.
-- Present GDD as complementary to relational/DDD approaches; emphasize append-only relations, invariants as link coexistence/uniqueness, and business-as-transformation `[relations₀] → f → [relations₁]`.
-- Keep tone pragmatic and concrete with domain-grounded scenarios (pricing, orders, fulfillment, etc.).
+- Present content with a pragmatic and concrete tone grounded in domain scenarios (pricing, orders, fulfillment, etc.).
 
 ## Quality bar
-- A change is complete when the Jekyll server starts cleanly, `scripts/check.sh` returns 0, both languages remain in sync, language-switch links work, and the new UI stays consistent with the custom layout/design system.
+- A change is complete when the Jekyll server starts cleanly, bilingual pages remain aligned, language-switch links work, and the rendering respects the overall style and design system of the blog.

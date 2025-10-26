@@ -1,12 +1,15 @@
----
 lang: en
-page_id: gdd-ddd-gdd
-permalink: /gdd/ddd-gdd.html
+page_id: article-ddd-vs-gdd
+title: DDD vs GDD (Graph-Driven Design)
+description: Comparison table between Domain-Driven Design and the relation-centric GDD approach.
+permalink: /articles/ddd-vs-gdd/
+nav_section: articles
+weight: 20
 ---
 
 # 🧩 DDD vs GDD (Graph-Driven Design)
 
-English | [Français](../fr/gdd/ddd-gdd.html)
+<div class="language-switch">English | [Français]({{ '/fr/articles/ddd-vs-gdd/' | relative_url }})</div>
 
 {% comment %} Content migrated from en/gdd/ddd-gdd.md {% endcomment %}
 
@@ -89,4 +92,4 @@ Both aim for the same goal: making business logic explicit, manageable, and dura
 
 ## See also
 
-- Main essay: [From Bloated Tables to Functional Relations](./index.html)
+- Main essay: [From Bloated Tables to Functional Relations]({{ '/articles/gdd/' | relative_url }})

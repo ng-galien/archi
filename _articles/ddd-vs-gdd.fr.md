@@ -1,12 +1,15 @@
----
 lang: fr
-page_id: gdd-ddd-gdd
-permalink: /gdd/ddd-gdd.html
+page_id: article-ddd-vs-gdd
+title: DDD vs GDD (Graph-Driven Design)
+description: Comparatif entre le Domain-Driven Design et l’approche relationnelle-fonctionnelle GDD.
+permalink: /articles/ddd-vs-gdd/
+nav_section: articles
+weight: 20
 ---
 
 # 🧩 DDD vs GDD (Graph-Driven Design)
 
-[English](../gdd/ddd-gdd.html) | Français
+<div class="language-switch">[English]({{ '/articles/ddd-vs-gdd/' | relative_url }}) | Français</div>
 
 {% comment %} Contenu migré depuis fr/gdd/ddd-gdd.md {% endcomment %}
 

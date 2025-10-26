@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Start Jekyll in background (daemon) by default
+# Start Jekyll in foreground (interactive) by default
 # Usage:
-#   ./scripts/serve.sh            # daemon mode (default)
-#   ./scripts/serve.sh --foreground  # foreground (interactive)
+#   ./scripts/serve.sh            # foreground mode (default)
+#   ./scripts/serve.sh --daemon   # daemon mode (background)
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
 PID_DIR="$ROOT_DIR/tmp/pids"
@@ -28,45 +28,46 @@ cd "$ROOT_DIR"
 bundle config set --local path vendor/bundle >/dev/null
 bundle install --jobs 4 --retry 3
 
-if [[ "${1:-}" == "--foreground" ]]; then
-  echo "Starting Jekyll in foreground on http://$HOST:$PORT ..."
-  JEKYLL_ENV=development bundle exec jekyll serve \
-    --host "$HOST" \
-    --port "$PORT" \
-    --livereload \
-    --drafts \
-    --trace
-  exit $?
-fi
-
-# If already running, don't start a duplicate
-if [[ -f "$PID_FILE" ]]; then
-  if ps -p "$(cat "$PID_FILE")" >/dev/null 2>&1; then
-    echo "Jekyll already running (PID $(cat "$PID_FILE")) at http://$HOST:$PORT"
-    exit 0
-  else
-    echo "Stale PID file found. Cleaning up."
-    rm -f "$PID_FILE"
+if [[ "${1:-}" == "--daemon" ]]; then
+  # If already running, don't start a duplicate
+  if [[ -f "$PID_FILE" ]]; then
+    if ps -p "$(cat "$PID_FILE")" >/dev/null 2>&1; then
+      echo "Jekyll already running (PID $(cat "$PID_FILE")) at http://$HOST:$PORT"
+      exit 0
+    else
+      echo "Stale PID file found. Cleaning up."
+      rm -f "$PID_FILE"
+    fi
   fi
+
+  echo "Starting Jekyll in background on http://$HOST:$PORT ..."
+  nohup env JEKYLL_ENV=development \
+    bundle exec jekyll serve \
+      --host "$HOST" \
+      --port "$PORT" \
+      --livereload \
+      --drafts \
+      --trace \
+      >"$LOG_FILE" 2>&1 &
+
+  JEKYLL_PID=$!
+  echo "$JEKYLL_PID" > "$PID_FILE"
+  sleep 1
+
+  if ps -p "$JEKYLL_PID" >/dev/null 2>&1; then
+    echo "Jekyll started (PID $JEKYLL_PID). Logs: $LOG_FILE"
+  else
+    echo "Failed to start Jekyll. Check logs: $LOG_FILE" >&2
+    exit 1
+  fi
+  exit 0
 fi
 
-echo "Starting Jekyll in background on http://$HOST:$PORT ..."
-nohup env JEKYLL_ENV=development \
-  bundle exec jekyll serve \
-    --host "$HOST" \
-    --port "$PORT" \
-    --livereload \
-    --drafts \
-    --trace \
-    >"$LOG_FILE" 2>&1 &
-
-JEKYLL_PID=$!
-echo "$JEKYLL_PID" > "$PID_FILE"
-sleep 1
-
-if ps -p "$JEKYLL_PID" >/dev/null 2>&1; then
-  echo "Jekyll started (PID $JEKYLL_PID). Logs: $LOG_FILE"
-else
-  echo "Failed to start Jekyll. Check logs: $LOG_FILE" >&2
-  exit 1
-fi
+echo "Starting Jekyll in foreground on http://$HOST:$PORT ..."
+JEKYLL_ENV=development bundle exec jekyll serve \
+  --host "$HOST" \
+  --port "$PORT" \
+  --livereload \
+  --drafts \
+  --trace
+exit $?

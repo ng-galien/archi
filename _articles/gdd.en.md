@@ -1,12 +1,15 @@
----
 lang: en
-page_id: gdd-index
-permalink: /gdd/
+page_id: article-gdd
+title: From Bloated Tables to Functional Relations
+description: Deep dive on graph-driven design and how to escape table obesity with relation-centric modeling.
+permalink: /articles/gdd/
+nav_section: articles
+weight: 10
 ---
 
 # From Bloated Tables to Functional Relations: Toward a More Natural, Evolvable Data Model
 
-English | [Français](../fr/gdd/index.html)
+<div class="language-switch">English | [Français]({{ '/fr/articles/gdd/' | relative_url }})</div>
 
 {% comment %} Content migrated from en/gdd/index.md {% endcomment %}
 
@@ -72,4 +75,4 @@ Existing relations tell the past; new ones describe the present. A business jour
 
 ## See also
 
-- Comparison: [DDD vs GDD](./ddd-gdd.html)
+- Comparison: [DDD vs GDD]({{ '/articles/ddd-vs-gdd/' | relative_url }})

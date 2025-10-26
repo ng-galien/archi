@@ -7,14 +7,14 @@ This repository is a bilingual (FR/EN) knowledge base about Graph-Driven Design 
 ## Documentation
 
 - English
-  - Landing: ./en/
-  - Main essay: ./en/gdd/index.md
-  - Comparison: ./en/gdd/ddd-gdd.md
+  - Landing: ./index.en.md
+  - Deep dives index: ./articles/index.en.md (sources in `_articles/*.en.md`)
+  - Blog index: ./blog/index.en.md (posts in `_posts/en/`)
 
 - Français
-  - Accueil : ./fr/
-  - Essai principal : ./fr/gdd/index.md
-  - Comparatif : ./fr/gdd/ddd-gdd.md
+  - Accueil : ./index.fr.md
+  - Articles de fond : ./articles/index.fr.md (sources dans `_articles/*.fr.md`)
+  - Blog : ./blog/index.fr.md (billets dans `_posts/fr/`)
 
 ## GitHub Pages (via Actions + Jekyll plugin)
 
@@ -73,4 +73,4 @@ Produce a fresh static build into `_site/`:
 
 Then open `./_site/index.html` in your browser or serve the folder with any static server.
 
-Contributions: keep French sources under `fr/` authoritative; add mirrored English pages under `en/` with the same paths (e.g., `fr/gdd/<slug>.md` ↔ `en/gdd/<slug>.md`). Use relative links throughout.
+Contributions: keep French sources canonical, then mirror the same edits in English. Long-form essays live under `_articles/<slug>.fr.md` ↔ `_articles/<slug>.en.md`. Blog posts live in `_posts/fr/` and `_posts/en/` with matching slugs/dates. Use `relative_url` filters (e.g., `{{ '/articles/gdd/' | relative_url }}`) to stay language-neutral in Markdown links.
