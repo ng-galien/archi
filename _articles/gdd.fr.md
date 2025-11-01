@@ -8,17 +8,17 @@ nav_section: articles
 weight: 10
 ---
 
-# Des Tables Obèses aux Relations Fonctionnelles : Pour une Modélisation de Données Plus Naturelle et Évolutive
+# Des Entités aux Relations : une Modélisation plus Naturelle du Métier
 
 ## Introduction
 
-Dans le monde de l'ingénierie logicielle, la modélisation de données est au cœur de tout système d'information. Pourtant, au fil des évolutions et des besoins métier changeants, de nombreux systèmes finissent par accumuler une complexité inutile, menant à des structures rigides et difficiles à maintenir. Cet article explore un problème récurrent – l’« obésité des tables » dans les bases relationnelles – et propose une alternative inspirée des graphes et du paradigme fonctionnel.  
-
-L’objectif n’est pas de rejeter les bases relationnelles, mais de montrer comment le fait de déplacer la variabilité vers les **relations** peut rendre les modèles plus naturels, plus adaptatifs, et plus fidèles à la réalité métier.  
+La modélisation de données est au cœur de tout système d’information, mais les approches classiques finissent souvent par rigidifier le métier.  
+Le **Graph-Driven Design (GDD)** propose une autre voie : déplacer la variabilité vers les **relations** plutôt que dans les entités, pour obtenir des modèles plus naturels, évolutifs et fidèles à la réalité métier.  
+Cet article part du constat de l’obésité des modèles relationnels et montre comment une approche inspirée des graphes et du paradigme fonctionnel permet de les rendre vivants à nouveau.  
 
 Nous aborderons successivement :
 - le constat terrain du biais *data-first*,
-- les symptômes de l’obésité des tables,
+- les signes d’essoufflement des modèles relationnels classiques,
 - les limites du modèle orienté objet et du DDD classique,
 - l’alternative graphique et relationnelle,
 - l’extension fonctionnelle du métier comme flux de transformations,
@@ -47,7 +47,7 @@ Cette dette structurelle devient un frein à la souplesse, un paradoxe pour un s
 ## 2. L’Obésité des Tables : Symptômes et Conséquences
 
 Dans la plupart des systèmes matures, certaines tables deviennent monstrueuses : **Product**, **Customer**, **Order**.  
-Elles débutent simples, puis gonflent avec le temps, jusqu’à accumuler des centaines de colonnes, souvent à moitié nulles.
+Elles débutent simples, puis gonflent avec le temps, jusqu’à accumuler plusieurs dizaines de colonnes, souvent à moitié nulles.
 
 ### Symptômes typiques
 
@@ -63,7 +63,7 @@ La maintenance devient un travail d’archéologie. Les nouveaux développeurs m
 
 ---
 
-## 3. Les Limites du DDD Classique
+## 3. Les Frontières du DDD dans la Pratique
 
 Le **Domain-Driven Design (DDD)** a apporté un cadre précieux : recentrer le métier, isoler les invariants, parler un langage commun.  
 Mais il suppose une certaine stabilité du domaine et une maturité d’équipe rarement réunies dans la réalité quotidienne.  
@@ -77,6 +77,9 @@ Le DDD vise la rigueur, mais cette rigueur devient lourde quand le domaine évol
 Le **GDD** ne cherche pas à le remplacer : il le prolonge, en déplaçant la cohérence de l’objet vers la **relation**.
 
 ---
+
+Face à cette complexité croissante, renforcer encore la structure ne suffit plus.  
+Il faut **changer de perspective** : ne plus penser les systèmes comme des ensembles d’objets figés, mais comme des réseaux de relations vivantes.
 
 ## 4. L’Alternative : Penser en Graphe
 
@@ -100,6 +103,90 @@ Cette sémantique explicite élimine la notion de `NULL` et rend la lecture mét
 Le graphe reflète la pensée humaine : on explore les relations, on contextualise les faits.  
 Une requête métier devient un parcours logique :  
 > “Quels produits ont une promotion active dans la catégorie ‘été’ et un prix inférieur à 50 € ?”
+
+### Une approche intuitive avant d’être technologique
+
+### Principe de stabilité et chaleur de la donnée
+
+Mais penser en graphe ne suffit pas : encore faut-il savoir **où placer la variabilité**.  
+C’est ici qu’intervient le principe de stabilité, ou de “chaleur” de la donnée, qui distingue les éléments structurels des éléments dynamiques du domaine.
+
+Toutes les données n'ont pas la même nature, ni la même "chaleur".  
+Certaines sont **stables**, presque structurelles : elles décrivent ce qu'une entité *est*.  
+D'autres sont **dynamiques**, évolutives : elles décrivent ce qu'une entité *fait*, ou ce qui lui *arrive*.  
+
+Dans une approche Graph-Driven, ce principe est fondamental :  
+on ne traite pas de la même manière les attributs froids et les faits chauds.
+
+- Les **données froides** (ou stables) sont celles dont la valeur change rarement : un nom, une dimension, un type.  
+  Elles appartiennent naturellement au **nœud**.  
+  Elles représentent l'identité ou les propriétés essentielles de l'entité.  
+
+- Les **données chaudes** (ou mutables) sont celles qui reflètent un état, une relation, un événement.  
+  Elles doivent être placées dans les **relations**, car ce sont elles qui racontent l'évolution du métier.  
+
+Ce principe de stabilité aide à décider ce qui doit être représenté comme relation :  
+> Est-ce que cette donnée peut changer indépendamment de l'entité ?  
+> Est-elle contextuelle ou temporelle ?  
+> A-t-elle un sens sans sa relation à d'autres éléments ?  
+
+Si la réponse est oui, alors elle mérite d'exister comme relation.  
+Sinon, elle reste une propriété du nœud.
+
+Ce principe introduit une hiérarchie naturelle entre les couches du graphe :
+- les **nœuds froids**, représentant l'essence des choses ;
+- les **liens chauds**, représentant la vie et les interactions du domaine.
+
+Cette distinction permet d'éviter la sur-généralisation, en gardant le graphe expressif sans le surcharger.  
+Elle introduit aussi une dimension temporelle implicite : plus la donnée est "chaude", plus elle est susceptible d'évoluer ou d'être historisée.
+
+### Les relations et la navigation hypermédia
+
+Dans un système fondé sur le GDD, la **relation** devient le candidat naturel pour porter les **liens hypermédia** (hypermédia ou tout autre protocole à base de liens).  
+En effet, la relation est déjà une **expression de contexte dynamique** : elle relie deux entités à un instant donné, sous une sémantique précise (ex. `HAS_STATUS`, `IS_MEMBER_OF`, `CAN_ACCESS`).  
+
+Cela correspond exactement à ce que l'hypermédia cherche à représenter :  
+des **liens contextualisés** entre ressources, porteurs d’intention et de signification.
+
+### Les relations comme actions métier
+
+Autrement dit :
+- un **nœud** représente une ressource stable,
+- une **relation** représente une action ou un état possible,
+- et l’**hypermédia** n’est rien d’autre qu’une matérialisation navigable de ces relations.
+
+Dans cette perspective, le GDD fournit une **base conceptuelle unifiée** entre le modèle de données et le modèle de communication.  
+Les liens que manipule l’API ne sont plus de simples métadonnées techniques, mais le **reflet direct du graphe métier**.
+
+Ainsi, une architecture hypermédia n’est pas une surcouche, mais une **extension naturelle du graphe** :  
+le client ne navigue plus dans des endpoints, mais dans les relations mêmes qui font vivre le domaine.
+
+On peut affiner cette idée en distinguant deux natures de navigation dans l’hypermédia :
+
+- Les **modifications d’état** concernent les **données froides**.  
+  Elles correspondent souvent à ce que l’on trouve dans les modèles REST classiques : des opérations de mise à jour ou de remplacement de la ressource (`PUT`, `PATCH`, `DELETE`).  
+  Elles visent à modifier la représentation de l’entité elle-même, donc sa partie stable.
+
+- Les **relations**, quant à elles, incarnent des **actions sur la ressource**.  
+  Ce sont les véritables **méthodes métier** : elles ne modifient pas directement l’objet, mais expriment une transition ou une interaction (`/approve`, `/assign`, `/cancel`, etc.).  
+  Dans cette logique, la relation devient l’équivalent conceptuel d’une **méthode hypermédia**, liant état courant et état possible.
+
+Ainsi, la séparation entre données froides (état) et relations (actions) rejoint celle que le GDD opère dans le modèle :  
+le graphe ne se contente plus de décrire le monde, il **décrit comment le monde peut évoluer**.
+
+Le **Graph-Driven Design** n’implique pas nécessairement l’usage d’une base orientée graphe.  
+On peut très bien concevoir une architecture **graph/relationnelle** au-dessus d’un SGBD classique (PostgreSQL, MariaDB, etc.) : tables pour les nœuds, tables pour les relations, vues matérialisées pour les parcours.  
+
+Le véritable changement se situe au **niveau de la représentation mentale**.  
+Dans un modèle pensé comme un graphe, on a naturellement tendance à :
+- placer la **variabilité** dans les **relations** (les liens entre faits ou états),  
+- considérer les entités comme des **points stables** du domaine,  
+- et faire **évoluer le système par ajout de liens**, plutôt que par mutation de champs.  
+
+À l’inverse, dans une modélisation “classique”, on tend à **agréger des états** dans une même entité, créant des objets qui accumulent des champs mutables et dont la cohérence devient de plus en plus difficile à maintenir.
+
+Cette différence de posture mentale a un impact majeur :  
+elle conduit à **penser l’évolution du métier comme une succession de faits relationnels**, et non comme la modification d’un état unique et centralisé.  
 
 ---
 
@@ -187,3 +274,4 @@ celle d’un système qui raconte son propre fonctionnement à travers ses relat
 ### Voir aussi
 
 - [Comparatif : DDD vs GDD]({{ '/articles/ddd-vs-gdd/' | relative_url }})
+- [Étude de cas : Appliquer le GDD à un domaine d'assurance]({{ '/articles/apply-gdd/' | relative_url }})

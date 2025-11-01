@@ -13,6 +13,7 @@ URLS=(
   "/fr/articles/gdd/"
   "/articles/ddd-vs-gdd/"
   "/fr/articles/ddd-vs-gdd/"
+  "/fr/articles/apply-gdd/"
   "/blog/"
   "/fr/blog/"
   "/2024/06/10/why-blog-and-deep-dives.html"

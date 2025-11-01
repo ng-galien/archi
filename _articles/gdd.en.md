@@ -2,7 +2,7 @@
 lang: en
 page_id: article-gdd
 title: From Bloated Tables to Functional Relations
-description: Deep dive on graph-driven design and how to escape table obesity with relation-centric modeling.
+description: Reflection on Graph‑Driven Design and relation‑centric data modeling.
 permalink: /articles/gdd/
 nav_section: articles
 weight: 10
@@ -10,68 +10,229 @@ weight: 10
 
 # From Bloated Tables to Functional Relations: Toward a More Natural, Evolvable Data Model
 
-{% comment %} Content migrated from en/gdd/index.md {% endcomment %}
+{% comment %} Mirror of the FR article. Keep structure/headings in lockstep. {% endcomment %}
 
 ## Introduction
 
-In software engineering, data modeling sits at the heart of any information system. Yet as systems evolve and business needs change, many end up accumulating unnecessary complexity, leading to rigid structures that are hard to maintain. This paper explores a recurring problem—“table obesity” in relational databases—and proposes an alternative inspired by graphs, enriched with a functional perspective. Based on real-world observation, we develop the core ideas showing how shifting variability to relations and pure transformations can make models more business-aligned, readable, and robust.
+Data modeling sits at the heart of any information system. Yet as systems evolve and needs shift, many accumulate unnecessary complexity, leading to rigid structures that are hard to maintain. This article explores a recurring issue—“table obesity” in relational databases—and proposes an alternative inspired by graphs and the functional paradigm.
 
-This approach does not reject traditional relational databases; it complements them with a more fluid way of thinking that fits how development teams actually work. We first diagnose the problem, then present the graph alternative, and finally outline a functional extension that treats business as a flow of immutable relations. Concrete examples and practical implications illustrate each point.
+The goal is not to reject relational databases, but to show how shifting variability to relations can make models more natural, adaptive, and faithful to business reality.
 
-## Field Reality: A Dominant Data‑First Reflex
+We will look at:
+- the field bias toward data‑first thinking,
+- the symptoms of table obesity,
+- the limits of OO/DDD in practice,
+- the graph‑ and relation‑centric alternative,
+- a functional extension where business is a flow of transformations,
+- and GDD’s compatibility with modern architectures.
 
-In practice, development teams often approach business problems through the lens of concrete data rather than abstract concepts. When a new need emerges—say, adding promotions to products in an e‑commerce system—the first question is rarely “What’s the underlying business concept?” but rather “Which columns do we add to the Product table?” This feels reassuring: it’s tangible, grounded in the existing system, and enables quick prototyping.
+---
 
-However, this data‑first bias has long‑term consequences. By reasoning in static structures, business logic ends up subordinated to the database. Tables become living archives of historical compromises: a field added for a temporary exception, a status for a seasonal variant, a boolean for an edge case. Over iterations, this creates invisible technical debt where structure dominates semantics. In real projects (CRM, ERP), this leads to cognitive fragmentation: developers spend more time navigating complex schemas than implementing business value.
+## 1. Field Reality: A Dominant Data‑First Reflex
 
-A concrete example: a Customer table starts simple (id, name, email). As subscriptions, marketing preferences, or multiple addresses are added, nullable columns appear (subscription_end_date, marketing_opt_in) or JSON blobs are used “for flexibility.” The table bloats, and the associated code (SQL queries, ORM mappings) turns into a maze of null checks and inconsistency handling.
+In most teams, when a need appears, the reflex question is:
+> “What do we add to the table?”
 
-## Table Obesity: Symptoms and Consequences
+This data‑first reflex feels natural: it gives a concrete starting point. Yet it nudges us to think through structure rather than meaning.
 
-In most mature systems, giants like Product, Customer, or Order appear. They begin simple with a handful of essential columns. Over time, they gain “weight”: more than 100 columns, half of them nullable, added to accommodate each new requirement without rethinking the model.
+Over time, this creates a gap between the model and the business. Tables become archives of compromises: a field for a temporary case, a boolean for an exception, a JSON blob for an urgent need. The result is a rigid structure where each addition complicates the system instead of clarifying it.
 
-Common signs:
+### Organizational consequence
 
-- Excessive nullability: optional fields everywhere, forcing code to be full of guards (if not null). Higher runtime risk and test complexity.
-- Contradictory columns: multiple ways to express the same idea (e.g., an “active” status and an “is_deleted” flag), creating logical inconsistencies.
-- Massive objects: entities become bags of optional fields, making domain objects (DTOs, entities) heavy and unexpressive.
-- Global fragility: any change—adding a field—threatens existing behaviors because dependencies are hidden in legacy code.
+Teams spend more time managing schemas than reasoning about the business. Every change becomes heavy—migrations, tests, ORM refactors. This structural debt slows down adaptation, the opposite of what an information system should provide.
 
-Consequences include degraded performance (too many indexes, unnecessary scans) and a steep learning curve for newcomers. Business‑wise, the table no longer reflects a dynamic reality but a sedimentation of fixes. For instance, an Order table may accumulate columns like promo_code (nullable), discount_amount (derived but stored), causing redundancy and update bugs.
+---
 
-This isn’t inevitable; it follows from a modeling approach that forces variability inside entities instead of their interactions.
+## 2. Table Obesity: Symptoms and Consequences
 
-## Limits of Traditional Conceptual Models
+In most mature systems, some tables grow monstrous: Product, Customer, Order. They start simple and swell over time, sometimes to hundreds of columns—many half‑nullable.
 
-Approaches like Domain‑Driven Design (DDD) or hexagonal architecture re‑center the business by modeling aggregates, entities, and value objects. They encourage a clear separation between domain logic and persistence via repositories.
+### Typical symptoms
 
-Yet these methods require mature team practices: modeling workshops, discipline around bounded contexts, and tolerance for abstraction. In many teams—constrained by deadlines, junior staffing, or heavy legacy—data‑first persists because it’s more immediate. Rather than fight this reflex, it’s more pragmatic to adapt it by providing a more flexible frame that starts from data but keeps it evolvable.
+- Excessive nullability: optional fields everywhere.  
+- Contradictory columns: `is_deleted` vs `active` with no clear rule.  
+- Massive objects: entities turn into bags of optional fields.  
+- Diffuse coupling: any evolution risks breaking others.
 
-## The Alternative: Think in Graphs to Move Variability
+### Impact on code
 
-Graph databases (like Neo4j) treat relations as first‑class citizens. Instead of bloating tables, keep simple nodes (Product, Customer, Order) and express variability through links: HAS_PRICE (with attributes like amount, currency), PLACED_BY (with date, channel), HAS_STATUS (with value, timestamp).
+Code grows heavier as the model deforms: omnipresent `if not null` checks, overloaded ORMs, bulky DTOs. Maintenance becomes archaeology. New developers spend weeks uncovering hidden relations between columns and statuses.
 
-Key idea: absence of a link naturally stands in for null. No HAS_PROMO? No active promotion. This eliminates unnecessary nulls and keeps the model coherent. Each relation can carry its metadata (validity dates, context), enabling fine‑grained modeling without mutating core entities.
+---
 
-Concrete effects:
+## 3. The Limits of Classic DDD
 
-- Better readability: the graph describes the domain through interconnected structure rather than an accumulation of fields.
-- Easier evolution: adding a link (e.g., HAS_RECOMMENDATION) doesn’t break anything; it’s a non‑intrusive extension.
-- Clearer code: small, non‑nullable domain objects that fit well with builders and immutables.
-- Business conversations: teams speak in terms of relations (“How do we link this product to that customer?”), better aligning with business language.
+Domain‑Driven Design (DDD) is invaluable: it centers the business, isolates invariants, and promotes a ubiquitous language. But it assumes a degree of stability and team maturity that’s rare in day‑to‑day reality.
 
-Developed example: in e‑commerce, instead of a Product table with 50 columns, use a Product node linked to PRICE (valid for a period), CATEGORY, SUPPLIER. A promotional price query becomes a graph traversal: Product → HAS_PROMO → DISCOUNTED_PRICE with filters on link attributes.
+Aggregates—meant as coherence boundaries—quickly become mini opaque systems. The need for flexibility pushes teams to bypass them with flags, artificial links, and ill‑defined transient states.
 
-This change doesn’t remove complexity; it makes it manageable: links can be dated, versioned, and contextualized, telling the story of interactions without merging entities. The model evolves by extension, not destructive mutation.
+### Tension between ideal and practice
 
-## Functional Extension: Business as Relation Transformations
+DDD aims for rigor, which can feel heavy when the domain changes constantly. GDD doesn’t replace DDD; it extends it by moving coherence from the object to the relation.
 
-Go further by viewing business not as static state but as a flow of transformations over relations. Most business rules boil down to: take a set of existing relations and derive new ones.
+---
 
-Example: a pricing calculation transforms links (Product → CHANNEL → PERIOD) into a new relation HAS_EFFECTIVE_PRICE. An order validation derives DELIVERABLE from (Order → ITEMS → STOCK). This aligns with functional programming: pure functions (no side effects), immutable, taking relational inputs and producing outputs without altering the past.
+## 4. The Alternative: Think in Graphs
 
-Existing relations tell the past; new ones describe the present. A business journey becomes a composition: [relations₀] → function1 → [relations₁] → function2 → [relations₂]. Persistence is just synchronization: accumulate facts (append‑only) rather than overwrite history.
+Graph stores like Neo4j or PGGraph consider relations as first‑class citizens alongside entities.
 
-## See also
+Instead of a `Product` table with 50 columns, keep a simple `Product` node and connect it to facts through links:
+
+```text
+[Product] --HAS_PRICE--> [Price]
+		  --HAS_PROMO--> [Promotion]
+		  --IN_CATEGORY--> [Category]
+```
+
+### The “absent link” as semantics
+
+The absence of a link becomes information: no active promo, no price for this channel. This explicit semantics removes most `NULL`s and makes business reading more direct.
+
+### Natural reading
+
+Graphs mirror how we think: we explore relations and contextualize facts. A business query becomes a traversal:
+> “Which products have an active promotion in the ‘summer’ category with a price under 50?”
+
+### An intuitive approach before it is technological
+
+Thinking in graphs is not enough; we still have to decide where variability should live. This is where the notion of stability—or the “temperature” of data—helps separate structural elements from dynamic ones.
+
+### Principle of stability and data temperature
+
+Not all data carries the same nature, nor the same “heat.” Some elements are stable, almost structural: they describe what an entity *is*. Others are dynamic and ever‑changing: they describe what an entity *does* or what *happens* to it.
+
+In a graph‑driven perspective this principle is fundamental: we treat cold attributes and hot facts differently.
+
+- **Cold data** (stable) rarely changes. It belongs to the node and represents the identity or essential properties of the entity.  
+- **Hot data** (mutable) reflects a state, a relation, or an event. It should live in the relations, because relations tell the story of how the domain evolves.  
+
+This principle guides the decision of what deserves to be a relation:  
+> Can this data change independently of the entity?  
+> Is it contextual or time‑bound?  
+> Does it make sense only through its link to other elements?  
+
+If the answer is yes, it deserves to exist as a relation. Otherwise, it stays as a node property.
+
+This principle creates a natural hierarchy in the graph:
+- **Cold nodes** capture the essence of things.  
+- **Hot links** capture the life and interactions of the domain.  
+
+The distinction avoids over‑generalization: the graph remains expressive without becoming overloaded. It also introduces an implicit temporal dimension: the hotter the data, the more likely it is to evolve or be versioned.
+
+### Relationships and hypermedia navigation
+
+In a GDD system, relations become natural carriers for hypermedia links (or any link‑based protocol). A relation is already an expression of dynamic context: it joins two entities at a given moment under a precise meaning (`HAS_STATUS`, `IS_MEMBER_OF`, `CAN_ACCESS`).
+
+That is exactly what hypermedia aims to describe: contextualized links between resources that carry intent and semantics.
+
+### Relations as business actions
+
+Put differently:
+- a **node** models a stable resource,
+- a **relation** models a possible action or state,
+- and **hypermedia** is simply a navigable materialization of those relations.
+
+From that angle, GDD offers a unified conceptual base between the data model and the communication model. The links exposed by the API are no longer mere technical metadata; they are a direct reflection of the business graph.
+
+Such an architecture is not a thin layer on top of the graph; it is the graph’s natural extension. Clients no longer navigate endpoints—they navigate the relations that bring the domain to life.
+
+We can refine the idea by distinguishing two kinds of navigation in hypermedia:
+
+- **State modifications** target **cold data**. They correspond to what we find in classic REST models: updates or replacements of the resource (`PUT`, `PATCH`, `DELETE`). They modify the stable part of the entity.  
+- **Relations**, meanwhile, embody **actions on the resource**. They are the real business methods: they do not mutate the object directly but express a transition or interaction (`/approve`, `/assign`, `/cancel`, etc.). In that sense, a relation becomes the hypermedia equivalent of a method, linking current state to potential state.  
+
+The separation between cold data (state) and relations (actions) mirrors the separation GDD enforces in the model: the graph does not just describe the world, it describes **how the world can evolve**.
+
+GDD does not mandate a graph database. You can build a graph/relational architecture on top of a traditional RDBMS (PostgreSQL, MariaDB, and so on): tables for nodes, tables for relations, materialized views for traversals.
+
+The real change happens in the mental model. In a graph mindset we naturally:
+- place **variability** in the **relations** (the links between facts or states),  
+- treat entities as the **stable anchors** of the domain,  
+- evolve the system by **adding links** rather than mutating fields.  
+
+By contrast, a classic model tends to aggregate states inside a single entity, producing objects that accumulate mutable fields whose coherence becomes harder to preserve.
+
+This mental posture has a major impact: it leads us to view business evolution as a succession of relational facts instead of repeated mutations of a single centralized state.
+
+---
+
+## 5. Functional Extension: Business as a Flow of Relations
+
+Inspired by FP, view the business as a transformation of relations. Each rule is a pure function that takes a set of links as input and produces others as output.
+
+```text
+[relations₀] → function1 → [relations₁] → function2 → [relations₂]
+```
+
+Examples:
+- Computing an effective price combines `HAS_PRICE` and `HAS_PROMO`.
+- Order validation derives `IS_DELIVERABLE` from `HAS_STOCK` and `HAS_ADDRESS`.
+
+### Key properties
+
+- Immutability: don’t overwrite; append a new link.  
+- Traceability: each transformation is a historized fact.  
+- Testability: a business function is testable in isolation, as it only depends on its inputs.
+
+---
+
+## 6. Versioning and Compatibility
+
+One major benefit of GDD is relation versioning. A link can exist in multiple versions (`HAS_PRICE@v1`, `HAS_PRICE@v2`) representing business evolution without breaking changes.
+
+### Advantages
+
+- Immediate rollback: return to a previous version without data migrations.  
+- Canary releases: coexist several versions for progressive validation.  
+- Continuous evolution: the model grows by addition, not erasure.
+
+This enables structural agility: the domain evolves by addition, not destruction.
+
+---
+
+## 7. Working with DDD, Not Against It
+
+DDD and GDD address different moments in design.
+
+| Aspect | DDD | GDD |
+|---|---|---|
+| Unit of modeling | Aggregate / entity | Relation |
+| Coherence | Encapsulation | Structure + global invariants |
+| Temporality | Optional | Native |
+| Evolution | Refactoring | Versioning |
+| Auditability | Added | Natural |
+
+DDD structures thinking; GDD structures data. One encapsulates, the other exposes. Together they offer a view that’s both rigorous and fluid.
+
+---
+
+## 8. GDD in a Microservices Environment
+
+In distributed architectures, each microservice manages a sub‑graph. Root nodes (`Customer`, `Product`, `Order`) are shared; each service defines its specialized relations (`pricing.*`, `fulfillment.*`, `marketing.*`).
+
+### Concrete benefits
+
+- Logical decoupling without data duplication.  
+- Stable identity: no need for cross‑database primary keys.  
+- Business autonomy: each team evolves its relational space without breaking others.  
+- Systemic coherence: ensured by structure and invariants, not distributed transactions.
+
+The graph becomes a common substrate where each domain adds its semantic layer.
+
+---
+
+## 9. Conclusion
+
+Graph‑Driven Design doesn’t replace relational models or DDD—it extends them. By centering relations, it:
+- frees variability,
+- captures business history,
+- and aligns technical structure with the language of facts.
+
+In fast‑moving domains, GDD offers a more natural path: a system that tells its own story through its relations.
+
+---
+
+### See also
 
 - Comparison: [DDD vs GDD]({{ '/articles/ddd-vs-gdd/' | relative_url }})
+- Case study: [Applying GDD to an Insurance Domain]({{ '/articles/apply-gdd/' | relative_url }})
